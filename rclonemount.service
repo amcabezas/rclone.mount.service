@@ -1,0 +1,17 @@
+#Rclone mount on boot file template Manjaro Gnome 
+#Copy file to /etc/systemd/system
+# For new service typing: sudo systemctl daemon-reload && systemctl enable rclonemount.service && systemctl start rclonemount.service
+[Unit]
+Description=rclonemount
+AssertPathIsDirectory=/home/example/OneDrive
+After=network-online.target
+
+[Service]
+Type=simple
+User=example
+ExecStart=/usr/bin/rclone --config=/home/example/.config/rclone/rclone.conf --vfs-cache-mode writes mount OneDrive: /home/example/OneDrive
+ExecStop=/bin/fusermount -u /home/example/Onedrive
+Restart=always
+RestartSec=10
+[Install]
+WantedBy=multi-user.target
